@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>FitLit</title>
+  </head>
+  <body>
+    <main class="data-container">
+      <article class="nav-container">
+        <div class="welcome-container">
+          <img class="profile-image" src="./images/profile-image.png" alt="profile-image" height="50px" width="50px">
+          <p class="welcome-message">User</p>
+          <p class="date-message">Date</p>
+        </div>
+        <section class="expanded-container">
+          <p class="user-greeting">User Profile</p>
+          <p class="user-email">Email</p>
+          <p class="user-address">Address</p>
+          <p class="user-stride">Stride Length</p>
+        </section>
+        <div class="logo-container">
+          <img class="logo-image" src="./images/logo-image.png" alt="logo-image" height="100px" width="100px">
+        </div>
+      </article>
+      <div class="left-container">
+        <section class="activity-container">
+          <style>
+            .activity-container {
+            background-image: url('./images/background.png');
+            background-repeat: repeat;
+            background-size: contain;
+          }
+          </style>
+          <div class="offset">
+            <div class="activity-info-container">
+              <p class="activity-header">Today's Activity</p>
+              <p class="user-steps">Goal</p>
+              <p class="activity-steps-today">Steps Today</p>
+              <p class="activity-distance-today">Distance Walked Today</p>
+              <p class="activity-total-today">Active Minutes Today</p>
+              <p class="activity-goal">Goal Reached</p>
+            </div>
+          </div>
+        </section>
+        <div class="activity-tracker">
+          <p class="activity-tracker-header">Steps This Week</p>
+          <div class="chart-wrapper-bar">
+            <canvas class="activity-chart"></canvas>
+          </div>
+          <p class="activity-units">in steps</p>
+        </div>
+      </div>
+      <div class="center-container">
+        <section class="hydration-container">
+          <style>
+            .hydration-container {
+            background-image: url('./images/background.png');
+            background-repeat: repeat;
+            background-size: contain;
+          }
+          </style>
+          <div class="offset">
+            <p class="hydration-header">Hydration Data</p>
+            <p class="hydration-today">Hydration Today</p>
+            <a href="https://www.thecalculator.co/health/Water-Calculator-56.html" class="hydration-info">how much water should you be drinking?</a>
+          </div>
+        </section>
+        <section class="community-container">
+          <style>
+            .community-container {
+            background-image: url('./images/background.png');
+            background-repeat: repeat;
+            background-size: contain;
+          }
+          </style>
+            <div class="offset">
+              <p class="community-header">Community</p>
+              <div class="friends-container">
+                <div class="friend1-container">
+                  <img class="friend1-image" src="./images/friend1-image.png" alt="friend1-image" height="50px" width="50px">
+                  <p class="Friend1"></p>
+                </div>
+                <div class="friend2-container">
+                  <img class="friend2-image" src="./images/friend2-image.png" alt="friend2-image" height="50px" width="50px">
+                  <p class="Friend2"></p>
+                </div>
+                <div class="friend3-container">
+                  <img class="friend3-image" src="./images/friend3-image.png" alt="friend3-image" height="50px" width="50px">
+                  <p class="Friend3"></p>
+                </div>
+                <div class="friend4-container">
+                  <img class="friend4-image" src="./images/friend4-image.png" alt="friend4-image" height="50px" width="50px">
+                  <p class="Friend4"></p>
+                </div>
+                <div class="friend5-container">
+                  <img class="friend5-image" src="./images/friend5-image.png" alt="friend5-image" height="50px" width="50px">
+                  <p class="Friend5"></p>
+                </div>
+              </div>
+              <p class="comparison-steps">Comparison data will go here</p>
+            </div>
+        </section>
+        <section class="sleep-container">
+          <style>
+            .sleep-container {
+            background-image: url('./images/background-flip.png');
+            background-repeat: repeat;
+            background-size: contain;
+          }
+          </style>
+            <div class="offset">
+              <p class="sleep-header">Sleep Data</p>
+              <p class="sleep-today">Last Rest</p>
+              <p class="sleep-average-allTime">Average Rest</p>
+              <p class="sleep-quality-today">Last Rest Quality</p>
+              <p class="sleep-quality-allTime">Average Rest Quality</p>
+              <a href="https://www.verywellhealth.com/pittsburgh-sleep-quality-index-psqi-5080750" class="sqi-info">how is sleep quality measured?</a>
+            </div>
+        </section>
+      </div>
+      <div class="right-container">
+        <div class="hydration-tracker">
+          <p class="hydration-tracker-header">Hydration This Week</p>
+          <div class="chart-wrapper-bar">
+            <canvas class="hydration-chart"></canvas>
+          </div>
+          <p class="hydration-units">in ounces</p>
+        </div>     
+        <div class="sleep-tracker">
+          <p class="sleep-tracker-header">Sleep This Week</p>
+          <div class="chart-wrapper-doughnut">
+            <canvas class="sleep-chart"></canvas>
+          </div>
+          <p class="sleep-units">in hours</p>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="bundle.js"></script>
+  </body>
+</html>
