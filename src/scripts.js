@@ -28,11 +28,13 @@ const sleepQualityAll = document.querySelector('.sleep-quality-allTime')
 const profileImage = document.querySelector('.profile-image')
 const expandedContainer = document.querySelector('.expanded-container')
 const userGreeting = document.querySelector('.user-greeting')
-// const userInput = document.querySelector('.')
+const userInputDate = document.getElementById('new-date')
+const userInputSteps = document.getElementById('new-steps')
+const addActivityButton = document.querySelector('.log-activity-button')
 
 // event listeners
 profileImage.addEventListener("click", toggleExpanded)
-// userInput.addEventListener("click", addActivity)
+addActivityButton.addEventListener("click", addActivity)
 welcomeMessage.addEventListener("click", toggleExpanded)
 window.addEventListener('load', () => {
 
@@ -51,23 +53,22 @@ Promise.all(apiCalls)
     displayActivityTracker()
     displayHydrationTracker()
     displaySleepTracker()
-    displayCalendar()
   })
   .catch(error => console.log(error))
 })
 
-// function addActivity() {
-//   fetch('http://localhost:3001/api/v1/activity', {
-//     method: 'POST',
-//     body: JSON.stringify(`{userID: ${user.id}, date: <string>, flightsOfStairs: <number>, minutesActive: <number>, numSteps: <number></number>}`),
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   })
-//     .then(response => response.json())
-//     .then(json => console.log(json))
-//     .catch(err => alert('Error: ', err));
-// }
+function addActivity() {
+  fetch('http://localhost:3001/api/v1/activity', {
+    method: 'POST',
+    body: JSON.stringify({userID: `${user.id}`, date: `${userInputDate.value.reverse()}`, flightsOfStairs: 0, minutesActive: 0, numSteps: `${userInputSteps.value}`}),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(json => console.log('json'))
+    .catch(err => alert('Something went wrong, please try again!', err));
+}
 
 function getRandomIndex(usersData) {
   return Math.floor(Math.random() * usersData.length)
@@ -295,6 +296,7 @@ import './images/friend2-image.png';
 import './images/friend3-image.png';
 import './images/friend4-image.png';
 import './images/friend5-image.png';
+import './images/timer-placeholder.jpg';
 
 
 
