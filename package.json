@@ -29,9 +29,11 @@
   },
   "dependencies": {
     "animate.css": "^4.1.1",
-    "chart.js": "^4.2.1"
+    "chart.js": "^4.2.1",
+    "countdown-js": "^1.0.2",
+    "timer.js": "^1.0.4"
   },
   "repository": {
-  "url": "git+https://github.com/RandyGitProjects/Fit-Lit.git"
+    "url": "git+https://github.com/RandyGitProjects/Fit-Lit.git"
   }
 }
