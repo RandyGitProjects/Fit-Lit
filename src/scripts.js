@@ -323,10 +323,10 @@ function startTimer() {
 }
 
 function resetTimer() {
-  pause = true
-  end = new Date().getTime()
-  timerMinutes.innerText = "00:"
-  timerSeconds.innerText = "00"
+  // pause = true
+  // end = new Date().getTime()
+  // timerMinutes.innerText = "00:"
+  // timerSeconds.innerText = "00"
   reps = 0;
   repsCount.innerText = (`${reps} Reps`)
   sets = 0;

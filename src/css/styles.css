@@ -187,9 +187,9 @@ body, html {
 }
 
 .reset-button {
-  margin-right: 40%;
-  margin-left: 40%;
-  width: fit-content;
+  margin-right: 33%;
+  margin-left: 33%;
+  width: 85px;
   cursor: pointer;
 }
 
