@@ -2,8 +2,6 @@
   font-family: 'Lato', sans-serif;
 }
 
-
-
 body, html {
   margin: 0px;
   padding: 15px;
@@ -36,6 +34,10 @@ body, html {
   border-bottom-left-radius: 10px;
 }
 
+.expansion-wrapper  {
+  margin-bottom: 300px;
+}
+
 .welcome-container  {
   display: flex;
   flex-direction: column;
@@ -43,6 +45,7 @@ body, html {
   align-items: center;
   margin-bottom: 0px;
   padding-top: 5px;
+  text-align: center;
 }
 
 .profile-image, .welcome-message, .date-message {
@@ -56,9 +59,25 @@ body, html {
 .welcome-message{
   padding-top: 5px;
   font-weight: bold;
+  text-align: center;
 }
 
-/* containers */
+.user-greeting  {
+  font-weight: bold;
+}
+
+/* user container toggle */
+.expanded-container  {
+  display: none;
+  margin-right: 5px;
+  margin-bottom: 550px;
+  margin-left: 5px;
+  overflow-wrap: normal;
+  text-align: center;
+  font-size: 12px;
+}
+
+/* dashboard */
 .display-container {
   display: flex;
   flex-direction:row;
@@ -68,44 +87,22 @@ body, html {
   grid-gap: 15px;
   padding: 15px;
   height: min-content;
-  width: 90%;
+  width: 85%;
   background-color: #141414;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 
-.activity-container, .add-activity-container, .activity-tracker, .hydration-container, .timer-container, .sleep-container, .hydration-tracker, .sleep-tracker {
+.activity-container, .add-activity-container, .activity-tracker, .hydration-container, .timer-container, .sleep-container, .hydration-tracker, .sleep-tracker, .community-container  {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 10px;
-  height: min-content;
-  background-color: #3e3e3e;
-  text-align: center;
-  border-radius: 5px;
-}
-
-.community-container  {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 10px;
-  height: min-content;
+  height: 325px;
   width: 300px;
   background-color: #3e3e3e;
   text-align: center;
   border-radius: 5px;
-}
-
-/* user container toggle */
-.expanded-container  {
-  display: none;
-  margin-right: 5px;
-  margin-bottom: 700px;
-  margin-left: 5px;
-  overflow-wrap: normal;
-  text-align: center;
-  font-size: 12px;
 }
 
 /* background div */
@@ -119,10 +116,6 @@ body, html {
   border-radius: 5px;
 }
 
-.user-greeting  {
-  font-weight: bold;
-}
-
 /* header tags */
 .activity-header, .steps-header, .add-activity-header, .timer-header, .community-header, .sleep-header, .hydration-header, .hydration-tracker-header, .activity-tracker-header, .sleep-tracker-header {
   margin-bottom: 15px;
@@ -132,11 +125,16 @@ body, html {
 }
 
 /* paragraph tags */
-.user-name, .user-email, .user-address, .user-stride, .user-steps, .comparison-steps, .sleep-today, .sleep-average-allTime, .sleep-quality-today, .sleep-quality-allTime, .hydration-today, .hydration-weekly {
+.user-name, .user-email, .user-address, .user-stride, .user-steps, .comparison-steps, .sleep-today, .sleep-average-allTime, .sleep-quality-today, .sleep-quality-allTime {
   margin: 5px;
 }
 
-.hydration-info, .sqi-info {
+.hydration-today  {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.sqi-info {
   margin-top: 15px;
   color: #CAFCFF;
   cursor: pointer;
@@ -159,6 +157,42 @@ body, html {
   margin-top: 0px;
 }
 
+/* timer */
+.timer-countdown-container  {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.timer-minutes, .timer-seconds  {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.start-button {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.timer-stats-container  {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.reps-count, .sets-count  {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.reset-button {
+  margin-right: 40%;
+  margin-left: 40%;
+  width: fit-content;
+  cursor: pointer;
+}
+
 /* data visualizations */
 .chart-wrapper-bar, .chart-wrapper-doughnut  {
   height: 70%;
@@ -175,6 +209,11 @@ body, html {
 /* chart elements */
 .activity-chart, .hydration-chart, .sleep-chart {
   cursor: pointer;
+}
+
+.hydration-chart  {
+  height: 200px;
+  width: 200px;
 }
 
 /* chart increments  */

@@ -3,9 +3,18 @@ import Hydration from '../src/Hydration'
 import Sleep from '../src/Sleep'
 import Activity from '../src/Activity'
 import apiCalls from '../src/apiCalls'
+import Countdown from 'countdown-js'
+
 
 // global variables
-let user, hydration, activity, sleep, toggle
+let user, hydration, activity, sleep, toggle, end
+
+// timer global variables
+let pause = false
+let reps = 0
+let sets = 0
+const thirtySeconds = 30000
+
 
 // query selectors
 const userAddress = document.querySelector('.user-address')
@@ -19,7 +28,7 @@ const dateMessage = document.querySelector('.date-message')
 const stepsToday = document.querySelector('.activity-steps-today')
 const distanceWalkedToday = document.querySelector('.activity-distance-today')
 const activeMinutesToday = document.querySelector('.activity-total-today')
-const numStepsWeekly = document.querySelector('.activity-steps-weekly')
+// const numStepsWeekly = document.querySelector('.activity-steps-weekly')
 const goalReached = document.querySelector('.activity-goal')
 const sleepToday = document.querySelector('.sleep-today')
 const sleepQualityToday = document.querySelector('.sleep-quality-today')
@@ -31,11 +40,21 @@ const userGreeting = document.querySelector('.user-greeting')
 const userInputDate = document.getElementById('new-date')
 const userInputSteps = document.getElementById('new-steps')
 const addActivityButton = document.querySelector('.log-activity-button')
+const timerStartButton = document.querySelector('.start-button')
+// const timerPauseButton = document.querySelector('.pause-button')
+const timerResetButton = document.querySelector('.reset-button')
+const timerMinutes = document.querySelector('.timer-minutes')
+const timerSeconds = document.querySelector('.timer-seconds')
+const repsCount = document.querySelector('.reps-count')
+const setsCount = document.querySelector('.sets-count')
 
 // event listeners
 profileImage.addEventListener("click", toggleExpanded)
-addActivityButton.addEventListener("click", addActivity)
 welcomeMessage.addEventListener("click", toggleExpanded)
+addActivityButton.addEventListener("click", addActivity)
+timerStartButton.addEventListener("click", startTimer)
+// timerPauseButton.addEventListener("click", pauseTimer)
+timerResetButton.addEventListener("click", resetTimer)
 window.addEventListener('load', () => {
 
 // functions 
@@ -132,22 +151,13 @@ function displayActivityTracker() {
 Chart.defaults.color = "#EDEDED",
 
   new Chart(ctx, {
-    type: "line",
+    type: 'bar',
     data: {
       labels: shortenedKeys,
       datasets:[{
-          color: "#fefefe",
-          label: 'Goal met?',
-          data: activity.reachStepGoal(user, htmlDate),
-          backgroundColor: "#28B0EB",
-          borderWidth: 0,
-        },{
         label: "Steps taken",
         data: activity.chartWeeklySteps(user, htmlDate),
         backgroundColor: ["#CAFCFF", "#89EBF1", "#65CAF6", "#28B0EB", "#2882EB", "#095AB8", "#023572"],
-        borderWidth: 1,
-        stack: 'combined',
-        type: 'bar',
       }]
     },
     options: {
@@ -161,10 +171,16 @@ Chart.defaults.color = "#EDEDED",
       scales: {
         x: {
           ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0
           }
         },
         y: {
           ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0
           }
         }
       }
@@ -196,7 +212,6 @@ function displaySleepTracker() {
         borderWidth: 0,
       },
       {
-        color: "white",
         label: "Hours slept",
         data: sleep.chartWeeklyHours(user, htmlDate),
         backgroundColor: ["#CAFCFF", "#89EBF1", "#65CAF6", "#28B0EB", "#2882EB", "#095AB8", "#023572"],
@@ -270,7 +285,6 @@ function displayHydrationTracker() {
 function toggleExpanded() {
   if (toggle === true)  {
     toggle = false
-    console.log(toggle)
     userGreeting.innerText =  `Welcome back, ${user.name.split(" ")[0]}!`
     userAddress.innerText = `${user.address}`
     userEmail.innerText = `${user.email}`
@@ -278,10 +292,45 @@ function toggleExpanded() {
     expandedContainer.style.display = "inline"
   } else {
     toggle = true;
-    console.log(toggle)
     expandedContainer.style.display = "none"
   }
   return toggle
+}
+
+function startTimer() {
+  pause = false;
+  end = new Date(new Date().getTime() + thirtySeconds)
+  let timer = Countdown.timer(end, function(timeLeft) {
+    if (pause === false)  {
+      timerMinutes.innerText = `0${timeLeft.minutes}:`
+      timerSeconds.innerText = timeLeft.seconds
+      // console.log(timeLeft.seconds)
+    } else {
+      pause = true
+    }
+  }, function() {
+    timerMinutes.innerText = "00:"
+    timerSeconds.innerText = "00"
+    if (pause === false)  {
+      reps = (reps +1)
+      repsCount.innerText = (`${reps} Reps`)
+      if (reps % 3 == 0)  {
+        sets = (sets +1)
+        setsCount.innerText = (`${sets} Sets`)
+      } 
+    }
+  })
+}
+
+function resetTimer() {
+  pause = true
+  end = new Date().getTime()
+  timerMinutes.innerText = "00:"
+  timerSeconds.innerText = "00"
+  reps = 0;
+  repsCount.innerText = (`${reps} Reps`)
+  sets = 0;
+  setsCount.innerText = (`${sets} Sets`)
 }
 
 // imports
