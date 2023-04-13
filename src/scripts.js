@@ -13,7 +13,7 @@ let user, hydration, activity, sleep, toggle, end
 let pause = false
 let reps = 0
 let sets = 0
-const thirtySeconds = 30000
+const thirtySeconds = 1000
 
 
 // query selectors
@@ -76,17 +76,25 @@ Promise.all(apiCalls)
   .catch(error => console.log(error))
 })
 
-function addActivity() {
-  fetch('http://localhost:3001/api/v1/activity', {
-    method: 'POST',
-    body: JSON.stringify({userID: `${user.id}`, date: `${userInputDate.value.reverse()}`, flightsOfStairs: 0, minutesActive: 0, numSteps: `${userInputSteps.value}`}),
-    headers: {
-      'Content-Type': 'application/json'
+function addActivity(event) {
+  event.preventDefault()
+  if (!userInputDate.value || !userInputSteps.value) {
+    window.alert('Please select a date and fill in the number of steps')
+    
+  } else {
+    fetch('http://localhost:3001/api/v1/activity', {
+      method: 'POST',
+      body: JSON.stringify({userID: parseInt(`${user.id}`), date: `${userInputDate.value}`, flightsOfStairs: 0, minutesActive: 0, numSteps: `${userInputSteps.value}`}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(json => console.log(json))
+      .catch(Error => window.alert('Server Error...Try Again later!'), Error);
+      userInputDate.value = ''
+      userInputSteps.value = ''
     }
-  })
-    .then(response => response.json())
-    .then(json => console.log('json'))
-    .catch(err => alert('Something went wrong, please try again!', err));
 }
 
 function getRandomIndex(usersData) {
@@ -314,9 +322,11 @@ function startTimer() {
     if (pause === false)  {
       reps = (reps +1)
       repsCount.innerText = (`${reps} Reps`)
-      if (reps % 3 == 0)  {
+      if (reps === 3)  {
         sets = (sets +1)
+        reps = 0
         setsCount.innerText = (`${sets} Sets`)
+        repsCount.innerText = (`${reps} Reps`)
       } 
     }
   })
