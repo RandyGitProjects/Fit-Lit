@@ -11,8 +11,8 @@
     <main class="data-container">
       <article class="nav-container">
         <div class="welcome-container">
-          <img class="profile-image" src="./images/profile-image.png" alt="profile-image" height="50px" width="50px">
-          <p class="welcome-message">User</p>
+          <img class="profile-image" src="./images/profile-image.png" alt="profile-image" height="50px" width="50px" tabindex="1">
+          <p class="welcome-message" tabindex="2">User</p>
           <p class="date-message">Date</p>
         </div>
         <div class="expansion-wrapper">
@@ -60,17 +60,17 @@
             <p class="add-activity-header">Log Activity</p>
             <form class="add-activity-form">
               <label for="new-date">Date:</label><br>
-              <input type="date" id="new-date" name="new-date"><br><br>
+              <input type="date" id="new-date" name="new-date" tabindex="3"><br><br>
               <label for="new-steps">New Steps:</label><br>
-              <input type="number" id="new-steps" name="new-steps"><br><br>
-              <input class="log-activity-button" type="submit" value="Add">
+              <input type="number" id="new-steps" name="new-steps" tabindex="5"><br><br>
+              <input class="log-activity-button" type="submit" value="Add" tabindex="5">
             </form> 
           </div>
         </section>
         <div class="activity-tracker">
           <p class="activity-tracker-header">Steps This Week</p>
           <div class="chart-wrapper-bar">
-            <canvas class="activity-chart"></canvas>
+            <canvas class="activity-chart" tabindex="6" aria-label="activity chart"></canvas>
           </div>
           <p class="activity-units">in steps</p>
         </div>
@@ -90,13 +90,13 @@
               <p class="timer-seconds">00</p>
             </div>
             <div class="timer-button-container">
-              <button class="start-button">Start</button>
+              <button class="start-button" tabindex="7">Start</button>
             </div>
             <div class="timer-stats-container">
               <p class="reps-count">0 Reps</p>
               <p class="sets-count">0 Sets</p>
             </div>
-            <button class="reset-button">Reset Stats</button>
+            <button class="reset-button" tabindex="8">Reset Stats</button>
           </div>
         </section>
         <section class="community-container">
@@ -137,7 +137,7 @@
         <div class="sleep-tracker">
           <p class="sleep-tracker-header">Sleep This Week</p>
           <div class="chart-wrapper-doughnut">
-            <canvas class="sleep-chart"></canvas>
+            <canvas class="sleep-chart" tabindex="9" aria-label="sleep chart"></canvas>
           </div>
           <p class="sleep-units">in hours</p>
         </div>
@@ -155,13 +155,13 @@
               <p class="sleep-average-allTime">Average Rest</p>
               <p class="sleep-quality-today">Last Rest Quality</p>
               <p class="sleep-quality-allTime">Average Rest Quality</p>
-              <a href="https://www.verywellhealth.com/pittsburgh-sleep-quality-index-psqi-5080750" class="sqi-info">how is sleep quality measured?</a>
+              <a href="https://www.verywellhealth.com/pittsburgh-sleep-quality-index-psqi-5080750" class="sqi-info" tabindex="10">how is sleep quality measured?</a>
             </div>
         </section>
         <div class="hydration-tracker">
           <p class="hydration-tracker-header">Hydration</p>
           <div class="chart-wrapper-bar">
-            <canvas class="hydration-chart"></canvas>
+            <canvas class="hydration-chart" tabindex="11" aria-label="hydration chart"></canvas>
           </div>
           <p class="hydration-units">in ounces</p>
           <p class="hydration-today">Hydration Today</p>
