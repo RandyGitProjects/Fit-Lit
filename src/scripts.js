@@ -13,8 +13,7 @@ let user, hydration, activity, sleep, toggle, end
 let pause = false
 let reps = 0
 let sets = 0
-const thirtySeconds = 1000
-
+const thirtySeconds = 30000
 
 // query selectors
 const userAddress = document.querySelector('.user-address')
@@ -28,7 +27,6 @@ const dateMessage = document.querySelector('.date-message')
 const stepsToday = document.querySelector('.activity-steps-today')
 const distanceWalkedToday = document.querySelector('.activity-distance-today')
 const activeMinutesToday = document.querySelector('.activity-total-today')
-// const numStepsWeekly = document.querySelector('.activity-steps-weekly')
 const goalReached = document.querySelector('.activity-goal')
 const sleepToday = document.querySelector('.sleep-today')
 const sleepQualityToday = document.querySelector('.sleep-quality-today')
@@ -41,20 +39,19 @@ const userInputDate = document.getElementById('new-date')
 const userInputSteps = document.getElementById('new-steps')
 const addActivityButton = document.querySelector('.log-activity-button')
 const timerStartButton = document.querySelector('.start-button')
-// const timerPauseButton = document.querySelector('.pause-button')
 const timerResetButton = document.querySelector('.reset-button')
 const timerMinutes = document.querySelector('.timer-minutes')
 const timerSeconds = document.querySelector('.timer-seconds')
 const repsCount = document.querySelector('.reps-count')
 const setsCount = document.querySelector('.sets-count')
 const activityChart = document.querySelector('.activity-chart')
+const postVerification = document.querySelector('.post-verification')
 
 // event listeners
 profileImage.addEventListener("click", toggleExpanded)
 welcomeMessage.addEventListener("click", toggleExpanded)
 addActivityButton.addEventListener("click", addActivity)
 timerStartButton.addEventListener("click", startTimer)
-// timerPauseButton.addEventListener("click", pauseTimer)
 timerResetButton.addEventListener("click", resetTimer)
 welcomeMessage.addEventListener("keydown", (event) => {
   if (event.key === 'Enter') {
@@ -110,6 +107,8 @@ function addActivity(event) {
         'Content-Type': 'application/json'
       }
     })
+      .then(postVerification.innerText = `You logged ${userInputSteps.value} steps on ${userInputDate.value}. Great Job!`)
+      .then(postVerification.style.visibility = "visible")
       .then(response => response.json())
       .then(json => console.log(json))
       .catch(Error => window.alert('Server Error...Try Again later!'), Error);
@@ -178,7 +177,6 @@ function displayActivityTracker() {
   })
 
 Chart.defaults.color = "#EDEDED",
-
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -227,7 +225,6 @@ function displaySleepTracker() {
     shortenedKeys.push(key.slice(5))
     return  shortenedKeys
   })
-
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -286,7 +283,6 @@ function displayHydrationTracker() {
     shortenedKeys.push(key.slice(5))
     return shortenedKeys
   })
-
   new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -333,7 +329,6 @@ function startTimer() {
     if (pause === false)  {
       timerMinutes.innerText = `0${timeLeft.minutes}:`
       timerSeconds.innerText = timeLeft.seconds
-      // console.log(timeLeft.seconds)
     } else {
       pause = true
     }
@@ -345,24 +340,25 @@ function startTimer() {
       repsCount.innerText = (`${reps} Reps`)
       if (reps === 3)  {
         sets = (sets +1)
-        reps = 0
         setsCount.innerText = (`${sets} Sets`)
-        repsCount.innerText = (`${reps} Reps`)
+        setTimeout(() => {
+          reps = 0
+          repsCount.innerText = (`${reps} Reps`)
+        }, 250);
       } 
     }
   })
 }
 
 function resetTimer() {
-  // pause = true
-  // end = new Date().getTime()
-  // timerMinutes.innerText = "00:"
-  // timerSeconds.innerText = "00"
   reps = 0;
   repsCount.innerText = (`${reps} Reps`)
   sets = 0;
   setsCount.innerText = (`${sets} Sets`)
+  console.log("timeout");
 }
+
+
 
 // imports
 import './css/styles.css';

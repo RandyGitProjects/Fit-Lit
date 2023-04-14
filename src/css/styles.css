@@ -140,6 +140,10 @@ body, html {
   cursor: pointer;
 }
 
+.post-verification {
+  visibility: hidden;
+}
+
 /* friends container */
 .friends-container  {
   display: flex;
