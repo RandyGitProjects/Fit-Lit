@@ -47,6 +47,7 @@ const timerMinutes = document.querySelector('.timer-minutes')
 const timerSeconds = document.querySelector('.timer-seconds')
 const repsCount = document.querySelector('.reps-count')
 const setsCount = document.querySelector('.sets-count')
+const activityChart = document.querySelector('.activity-chart')
 
 // event listeners
 profileImage.addEventListener("click", toggleExpanded)
@@ -55,6 +56,26 @@ addActivityButton.addEventListener("click", addActivity)
 timerStartButton.addEventListener("click", startTimer)
 // timerPauseButton.addEventListener("click", pauseTimer)
 timerResetButton.addEventListener("click", resetTimer)
+welcomeMessage.addEventListener("keydown", (event) => {
+  if (event.key === 'Enter') {
+    userGreeting.innerText =  `Welcome back, ${user.name.split(" ")[0]}!`
+    userAddress.innerText = `${user.address}`
+    userEmail.innerText = `${user.email}`
+    userStride.innerText = `Stride Length: ${user.strideLength} ft`
+    expandedContainer.style.display = "inline";
+  }
+})
+
+profileImage.addEventListener("keydown", (event) => {
+    if (event.key === 'Enter') {
+      userGreeting.innerText =  `Welcome back, ${user.name.split(" ")[0]}!`
+      userAddress.innerText = `${user.address}`
+      userEmail.innerText = `${user.email}`
+      userStride.innerText = `Stride Length: ${user.strideLength} ft`
+      expandedContainer.style.display = "inline";
+    }
+})
+
 window.addEventListener('load', () => {
 
 // functions 
