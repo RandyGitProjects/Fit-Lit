@@ -13,8 +13,7 @@ let user, hydration, activity, sleep, toggle, end
 let pause = false
 let reps = 0
 let sets = 0
-const thirtySeconds = 30000
-
+const thirtySeconds = 3000
 
 // query selectors
 const userAddress = document.querySelector('.user-address')
@@ -46,6 +45,7 @@ const timerSeconds = document.querySelector('.timer-seconds')
 const repsCount = document.querySelector('.reps-count')
 const setsCount = document.querySelector('.sets-count')
 const activityChart = document.querySelector('.activity-chart')
+const postVerification = document.querySelector('.post-verification')
 
 // event listeners
 profileImage.addEventListener("click", toggleExpanded)
@@ -107,6 +107,8 @@ function addActivity(event) {
         'Content-Type': 'application/json'
       }
     })
+      .then(postVerification.innerText = `You logged ${userInputSteps.value} steps on ${userInputDate.value}. Great Job!`)
+      .then(postVerification.style.visibility = "visible")
       .then(response => response.json())
       .then(json => console.log(json))
       .catch(Error => window.alert('Server Error...Try Again later!'), Error);
@@ -327,7 +329,6 @@ function startTimer() {
     if (pause === false)  {
       timerMinutes.innerText = `0${timeLeft.minutes}:`
       timerSeconds.innerText = timeLeft.seconds
-      // console.log(timeLeft.seconds)
     } else {
       pause = true
     }
@@ -339,9 +340,11 @@ function startTimer() {
       repsCount.innerText = (`${reps} Reps`)
       if (reps === 3)  {
         sets = (sets +1)
-        reps = 0
         setsCount.innerText = (`${sets} Sets`)
-        repsCount.innerText = (`${reps} Reps`)
+        setTimeout(() => {
+          reps = 0
+          repsCount.innerText = (`${reps} Reps`)
+        }, 250);
       } 
     }
   })
@@ -352,7 +355,10 @@ function resetTimer() {
   repsCount.innerText = (`${reps} Reps`)
   sets = 0;
   setsCount.innerText = (`${sets} Sets`)
+  console.log("timeout");
 }
+
+
 
 // imports
 import './css/styles.css';
