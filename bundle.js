@@ -221,23 +221,26 @@ class Activity {
     this.activity = activityData;
   }
 
-  milesWalkedByDay(user, date) {
+  filterUserActivityData(user, date) {
     const currentUserActivity = this.activity.filter(data => data.userID === user.id)
-    const userActivity = currentUserActivity.filter(data => data.date === date)
+    const filteredUserActivity = currentUserActivity.filter(data => data.date === date)
+    return filteredUserActivity
+  }
+
+  milesWalkedByDay(user, date) {
+    const userActivity = this.filterUserActivityData(user, date)
     const miles = (userActivity[0].numSteps * user.strideLength) / 5280
     return miles.toFixed(2)
   }
 
   minutesActiveByDay(user, date) {
-    const currentUserActivity = this.activity.filter(data => data.userID === user.id)
-    const userActivity = currentUserActivity.filter(data => data.date === date)
+    const userActivity = this.filterUserActivityData(user, date)
     const minutes = userActivity[0].minutesActive
     return minutes
   }
 
   reachStepGoal(user, date) {
-    const currentUserActivity = this.activity.filter(data => data.userID === user.id)
-    const userActivity = currentUserActivity.filter(data => data.date === date)
+    const userActivity = this.filterUserActivityData(user, date)
     if (userActivity[0].numSteps >= user.dailyStepGoal) {
       return 'Congrats! You did it!'
     } else {
@@ -246,8 +249,7 @@ class Activity {
   }
 
   todaysStepCount(user, date) {
-    const currentUserActivity = this.activity.filter(data => data.userID === user.id)
-    const userActivity = currentUserActivity.filter(data => data.date === date)
+    const userActivity = this.filterUserActivityData(user, date)
     return userActivity[0].numSteps
   }
 
@@ -289,19 +291,19 @@ __webpack_require__.r(__webpack_exports__);
 
 let apiCalls;
 
-const userAPI = fetch("https://fitlit-api.herokuapp.com/api/v1/users")
+const userAPI = fetch("http://localhost:3001/api/v1/users	")
   .then(response => response.json())
   .catch(error => console.log(error))
 
-const sleepAPI = fetch("https://fitlit-api.herokuapp.com/api/v1/sleep")
+const sleepAPI = fetch("http://localhost:3001/api/v1/sleep")
   .then(response => response.json())
   .catch(error => console.log(error))
 
-  const hydrationAPI = fetch("https://fitlit-api.herokuapp.com/api/v1/hydration")
+  const hydrationAPI = fetch("http://localhost:3001/api/v1/hydration")
   .then(response => response.json())
   .catch(error => console.log(error))
 
-  const activityAPI = fetch("https://fitlit-api.herokuapp.com/api/v1/activity")
+  const activityAPI = fetch("http://localhost:3001/api/v1/activity")
   .then(response => response.json())
   .catch(error => console.log(error))
 
@@ -311,15 +313,98 @@ apiCalls = [userAPI, sleepAPI, hydrationAPI, activityAPI]
 
 /***/ }),
 /* 6 */
+/***/ ((module) => {
+
+
+
+var Countdown = function(){}
+
+Countdown.timer = function(end, onTick, onComplete) {
+  var timeLeft = end - new Date();
+
+  var timeAPI = {
+    DAYS: 1000 * 60 * 60 * 24,
+    HOURS: 1000 * 60 * 60,
+    MINUTES: 1000 * 60,
+    SECONDS: 1000
+  }
+
+  var tick = function() {
+    if(timeLeft > 0) {
+      var time = timeLeft
+      var days = Math.floor(time / (timeAPI.DAYS))
+      time %= timeAPI.DAYS
+      var hours = Math.floor(time / (timeAPI.HOURS))
+      time %= timeAPI.HOURS
+      var minutes = Math.floor(time / (timeAPI.MINUTES))
+      time %= timeAPI.MINUTES
+      var seconds = Math.floor(time / (timeAPI.SECONDS))
+
+      var countdown = {
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+      }
+      onTick(countdown)
+      timeLeft -= 1000
+    }else {
+      timeLeft -= 1000
+      clearInterval(interval),
+      onComplete()
+    }
+  }
+
+  var interval = setInterval(
+    (function(self){
+      return function(){
+        tick.call(self)
+      }
+    })(this), 1000
+  )
+
+  var getTimeRemaining = function() {
+      var time = timeLeft
+      var days = Math.floor(time / timeAPI.DAYS)
+      time %= timeAPI.DAYS
+      var hours = Math.floor(time / timeAPI.HOURS)
+      time %= timeAPI.HOURS
+      var minutes = Math.floor(time / timeAPI.MINUTES)
+      time %= timeAPI.MINUTES
+      var seconds = Math.floor(time / timeAPI.SECONDS)
+
+      return {
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+      }
+    }
+
+  tick.call(this)
+
+  return {
+    abort: function() {
+      clearInterval(interval)
+    },
+    getTimeRemaining: getTimeRemaining
+  }
+}
+
+module.exports = Countdown;
+
+
+/***/ }),
+/* 7 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_styles_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_styles_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 
             
 
@@ -335,7 +420,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_node_modules_sass_loader_dist_cjs_js_styles_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
@@ -609,29 +694,29 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "* {\n  font-family: \"Lato\", sans-serif;\n}\n\nbody, html {\n  margin: 0px;\n  height: 100vh;\n  width: 100vw;\n  background-color: #272727;\n  font-weight: thin;\n  font-size: 14px;\n  color: #fefefe;\n}\n\n/* dashboard */\n.data-container {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n  align-content: center;\n  height: 100vh;\n  width: 100vw;\n  background-color: #272727;\n}\n\n/* nav bar */\n.nav-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  align-items: center;\n  padding: 15px;\n  width: 145px;\n  background-color: #141414;\n  border-right: 1px #272727 solid;\n  border-top-left-radius: 10px;\n  border-bottom-left-radius: 10px;\n}\n\n.welcome-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 0px;\n  padding-top: 5px;\n}\n\n.profile-image, .welcome-message, .date-message {\n  margin: 5px;\n}\n\n.profile-image, .welcome-message {\n  cursor: pointer;\n}\n\n.welcome-message {\n  padding-top: 5px;\n  font-weight: bold;\n}\n\n/* containers */\n.left-container, .center-container, .right-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  height: 95vh;\n  width: 25vw;\n  background-color: #141414;\n}\n\n.right-container {\n  border-top-right-radius: 10px;\n  border-bottom-right-radius: 10px;\n}\n\n.activity-container, .activity-tracker, .hydration-container, .community-container, .sleep-container, .hydration-tracker, .sleep-tracker {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  margin: 2.5%;\n  padding: 10px;\n  height: 85%;\n  width: 85%;\n  background-color: #3e3e3e;\n  text-align: center;\n  border-radius: 5px;\n}\n\n/* user container toggle */\n.expanded-container {\n  display: none;\n  margin-right: 5px;\n  margin-bottom: 350px;\n  margin-left: 5px;\n  overflow-wrap: normal;\n  text-align: center;\n  font-size: 12px;\n}\n\n/* background div */\n.offset {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 100%;\n  padding: 10px;\n  background-color: #3e3e3e;\n  opacity: 0.98;\n  border-radius: 5px;\n}\n\n/* this element takes up empty space */\n.spacer-gif {\n  margin-top: 5px;\n  height: 100px;\n  width: 100px;\n}\n\n.user-greeting {\n  font-weight: bold;\n}\n\n/* header tags */\n.community-header, .activity-header, .steps-header, .activity-header, .sleep-header, .hydration-header, .hydration-tracker-header, .activity-tracker-header, .sleep-tracker-header {\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: bold;\n  font-size: 18px;\n}\n\n/* paragraph tags */\n.user-name, .user-email, .user-address, .user-stride, .user-steps, .comparison-steps, .sleep-today, .sleep-average-allTime, .sleep-quality-today, .sleep-quality-allTime, .hydration-today, .hydration-weekly {\n  margin: 5px;\n}\n\n.hydration-info, .sqi-info {\n  margin-top: 15px;\n  color: #CAFCFF;\n  cursor: pointer;\n}\n\n/* friends container */\n.friends-container {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n}\n\n.friend1-image, .friend2-image, .friend3-image, .friend4-image, .friend5-image {\n  padding-right: 10px;\n  padding-left: 10px;\n}\n\n.friend1, .friend2, .friend3, .friend4, .friend5 {\n  margin-top: 0px;\n}\n\n/* data visualizations */\n.chart-wrapper-bar, .chart-wrapper-doughnut {\n  height: 70%;\n  width: 100%;\n}\n\n.activity-tracker, .hydration-tracker, .sleep-tracker {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 85%;\n  padding: 10px;\n}\n\n/* chart elements */\n.activity-chart, .hydration-chart, .sleep-chart {\n  cursor: pointer;\n}\n\n/* chart increments  */\n.activity-units, .hydration-units, .sleep-units {\n  margin-top: 15px;\n  font-size: 12px;\n}", "",{"version":3,"sources":["webpack://./src/css/styles.css"],"names":[],"mappings":"AAAA;EACE,+BAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,YAAA;EACA,yBAAA;EACA,iBAAA;EACA,eAAA;EACA,cAAA;AACF;;AAEA,cAAA;AACA;EACE,aAAA;EACA,mBAAA;EACA,eAAA;EACA,uBAAA;EACA,qBAAA;EACA,aAAA;EACA,YAAA;EACA,yBAAA;AACF;;AAEA,YAAA;AACA;EACE,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,mBAAA;EACA,aAAA;EACA,YAAA;EACA,yBAAA;EACA,+BAAA;EACA,4BAAA;EACA,+BAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,gBAAA;AACF;;AAEA;EACE,WAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,gBAAA;EACA,iBAAA;AACF;;AAEA,eAAA;AACA;EACE,aAAA;EACA,sBAAA;EACA,2BAAA;EACA,mBAAA;EACA,YAAA;EACA,WAAA;EACA,yBAAA;AACF;;AAEA;EACE,6BAAA;EACA,gCAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;EACA,aAAA;EACA,WAAA;EACA,UAAA;EACA,yBAAA;EACA,kBAAA;EACA,kBAAA;AACF;;AAEA,0BAAA;AACA;EACE,aAAA;EACA,iBAAA;EACA,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,kBAAA;EACA,eAAA;AACF;;AAEA,mBAAA;AACA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;EACA,aAAA;EACA,yBAAA;EAA0B,aAAA;EAC1B,kBAAA;AAEF;;AACA,sCAAA;AACA;EACE,eAAA;EACA,aAAA;EACA,YAAA;AAEF;;AACA;EACE,iBAAA;AAEF;;AACA,gBAAA;AACA;EACE,mBAAA;EACA,kBAAA;EACA,iBAAA;EACA,eAAA;AAEF;;AACA,mBAAA;AACA;EACE,WAAA;AAEF;;AACA;EACE,gBAAA;EACA,cAAA;EACA,eAAA;AAEF;;AACA,sBAAA;AACA;EACE,aAAA;EACA,mBAAA;EACA,eAAA;EACA,uBAAA;AAEF;;AACA;EACE,mBAAA;EACA,kBAAA;AAEF;;AACA;EACE,eAAA;AAEF;;AACA,wBAAA;AACA;EACE,WAAA;EACA,WAAA;AAEF;;AACA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,WAAA;EACA,aAAA;AAEF;;AACA,mBAAA;AACA;EACE,eAAA;AAEF;;AACA,sBAAA;AACA;EACE,gBAAA;EACA,eAAA;AAEF","sourcesContent":["*   { \n  font-family: 'Lato', sans-serif;\n}\n\nbody, html {\n  margin: 0px;\n  height: 100vh;\n  width: 100vw;\n  background-color: #272727;\n  font-weight: thin;\n  font-size: 14px;\n  color: #fefefe;\n}\n\n/* dashboard */\n.data-container {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n  align-content: center;\n  height: 100vh;\n  width: 100vw;\n  background-color: #272727;\n}\n\n/* nav bar */\n.nav-container  {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  align-items: center;\n  padding: 15px;\n  width: 145px;\n  background-color: #141414;\n  border-right: 1px #272727 solid;\n  border-top-left-radius: 10px;\n  border-bottom-left-radius: 10px;\n}\n\n.welcome-container  {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 0px;\n  padding-top: 5px;\n}\n\n.profile-image, .welcome-message, .date-message {\n  margin: 5px;\n}\n\n.profile-image, .welcome-message  {\n  cursor: pointer;\n}\n\n.welcome-message{\n  padding-top: 5px;\n  font-weight: bold;\n}\n\n/* containers */\n.left-container, .center-container, .right-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n  height: 95vh;\n  width: 25vw;\n  background-color: #141414;\n}\n\n.right-container  {\n  border-top-right-radius: 10px;\n  border-bottom-right-radius: 10px;\n}\n\n.activity-container, .activity-tracker, .hydration-container, .community-container, .sleep-container, .hydration-tracker, .sleep-tracker {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  margin: 2.5%;\n  padding: 10px;\n  height: 85%;\n  width: 85%;\n  background-color: #3e3e3e;\n  text-align: center;\n  border-radius: 5px;\n}\n\n/* user container toggle */\n.expanded-container  {\n  display: none;\n  margin-right: 5px;\n  margin-bottom: 350px;\n  margin-left: 5px;\n  overflow-wrap: normal;\n  text-align: center;\n  font-size: 12px;\n}\n\n/* background div */\n.offset {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 100%;\n  padding: 10px;\n  background-color: #3e3e3e;opacity:0.98;\n  border-radius: 5px;\n}\n\n/* this element takes up empty space */\n.spacer-gif  {\n  margin-top: 5px;\n  height: 100px;\n  width: 100px;\n}\n\n.user-greeting  {\n  font-weight: bold;\n}\n\n/* header tags */\n.community-header, .activity-header, .steps-header, .activity-header, .sleep-header, .hydration-header, .hydration-tracker-header, .activity-tracker-header, .sleep-tracker-header {\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: bold;\n  font-size: 18px;\n}\n\n/* paragraph tags */\n.user-name, .user-email, .user-address, .user-stride, .user-steps, .comparison-steps, .sleep-today, .sleep-average-allTime, .sleep-quality-today, .sleep-quality-allTime, .hydration-today, .hydration-weekly {\n  margin: 5px;\n}\n\n.hydration-info, .sqi-info {\n  margin-top: 15px;\n  color: #CAFCFF;\n  cursor: pointer;\n}\n\n/* friends container */\n.friends-container  {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n}\n\n.friend1-image, .friend2-image, .friend3-image, .friend4-image, .friend5-image  {\n  padding-right: 10px;\n  padding-left: 10px;\n}\n\n.friend1, .friend2, .friend3, .friend4, .friend5  {\n  margin-top: 0px;\n}\n\n/* data visualizations */\n.chart-wrapper-bar, .chart-wrapper-doughnut  {\n  height: 70%;\n  width: 100%;\n}\n\n.activity-tracker, .hydration-tracker, .sleep-tracker {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 85%;\n  padding: 10px;\n}\n\n/* chart elements */\n.activity-chart, .hydration-chart, .sleep-chart {\n  cursor: pointer;\n}\n\n/* chart increments  */\n.activity-units, .hydration-units, .sleep-units  {\n  margin-top: 15px;\n  font-size: 12px;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "* {\n  font-family: \"Lato\", sans-serif;\n}\n\nbody, html {\n  margin: 0px;\n  padding: 15px;\n  background-color: #272727;\n  font-weight: thin;\n  font-size: 14px;\n  color: #fefefe;\n}\n\n/* dashboard */\n.data-container {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-content: center;\n  background-color: #272727;\n}\n\n/* nav bar */\n.nav-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  align-items: center;\n  padding: 15px;\n  width: 150px;\n  background-color: #141414;\n  border-right: 1px #272727 solid;\n  border-top-left-radius: 10px;\n  border-bottom-left-radius: 10px;\n}\n\n.expansion-wrapper {\n  margin-bottom: 300px;\n}\n\n.welcome-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 0px;\n  padding-top: 5px;\n  text-align: center;\n}\n\n.profile-image, .welcome-message, .date-message {\n  margin: 5px;\n}\n\n.profile-image, .welcome-message {\n  cursor: pointer;\n}\n\n.welcome-message {\n  padding-top: 5px;\n  font-weight: bold;\n  text-align: center;\n}\n\n.user-greeting {\n  font-weight: bold;\n}\n\n/* user container toggle */\n.expanded-container {\n  display: none;\n  margin-right: 5px;\n  margin-bottom: 550px;\n  margin-left: 5px;\n  overflow-wrap: normal;\n  text-align: center;\n  font-size: 12px;\n}\n\n/* dashboard */\n.display-container {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: space-around;\n  align-items: flex-start;\n  grid-gap: 15px;\n  padding: 15px;\n  height: min-content;\n  width: 85%;\n  background-color: #141414;\n  border-top-right-radius: 10px;\n  border-bottom-right-radius: 10px;\n}\n\n.activity-container, .add-activity-container, .activity-tracker, .hydration-container, .timer-container, .sleep-container, .hydration-tracker, .sleep-tracker, .community-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 10px;\n  height: 325px;\n  width: 300px;\n  background-color: #3e3e3e;\n  text-align: center;\n  border-radius: 5px;\n}\n\n/* background div */\n.offset {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 100%;\n  padding: 25px;\n  background-color: #3e3e3e;\n  opacity: 0.98;\n  border-radius: 5px;\n}\n\n/* header tags */\n.activity-header, .steps-header, .add-activity-header, .timer-header, .community-header, .sleep-header, .hydration-header, .hydration-tracker-header, .activity-tracker-header, .sleep-tracker-header {\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: bold;\n  font-size: 18px;\n}\n\n/* paragraph tags */\n.user-name, .user-email, .user-address, .user-stride, .user-steps, .comparison-steps, .sleep-today, .sleep-average-allTime, .sleep-quality-today, .sleep-quality-allTime {\n  margin: 5px;\n}\n\n.hydration-today {\n  margin-top: 0px;\n  margin-bottom: 10px;\n}\n\n.sqi-info {\n  margin-top: 15px;\n  color: #CAFCFF;\n  cursor: pointer;\n}\n\n/* friends container */\n.friends-container {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n}\n\n.friend1-image, .friend2-image, .friend3-image, .friend4-image, .friend5-image {\n  padding-right: 10px;\n  padding-left: 10px;\n}\n\n.friend1, .friend2, .friend3, .friend4, .friend5 {\n  margin-top: 0px;\n}\n\n/* timer */\n.timer-countdown-container {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  font-size: 40px;\n}\n\n.timer-minutes, .timer-seconds {\n  margin-top: 0px;\n  margin-bottom: 10px;\n}\n\n.start-button {\n  width: fit-content;\n  cursor: pointer;\n}\n\n.timer-stats-container {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n}\n\n.reps-count, .sets-count {\n  margin-right: 5px;\n  margin-left: 5px;\n}\n\n.reset-button {\n  margin-right: 33%;\n  margin-left: 33%;\n  width: 85px;\n  cursor: pointer;\n}\n\n/* data visualizations */\n.chart-wrapper-bar, .chart-wrapper-doughnut {\n  height: 70%;\n  width: 100%;\n}\n\n.activity-tracker, .hydration-tracker, .sleep-tracker {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 10px;\n}\n\n/* chart elements */\n.activity-chart, .hydration-chart, .sleep-chart {\n  cursor: pointer;\n}\n\n.hydration-chart {\n  height: 200px;\n  width: 200px;\n}\n\n/* chart increments  */\n.activity-units, .hydration-units, .sleep-units {\n  margin-top: 15px;\n  font-size: 12px;\n}", "",{"version":3,"sources":["webpack://./src/css/styles.css"],"names":[],"mappings":"AAAA;EACE,+BAAA;AACF;;AAEA;EACE,WAAA;EACA,aAAA;EACA,yBAAA;EACA,iBAAA;EACA,eAAA;EACA,cAAA;AACF;;AAEA,cAAA;AACA;EACE,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,qBAAA;EACA,yBAAA;AACF;;AAEA,YAAA;AACA;EACE,aAAA;EACA,sBAAA;EACA,8BAAA;EACA,mBAAA;EACA,aAAA;EACA,YAAA;EACA,yBAAA;EACA,+BAAA;EACA,4BAAA;EACA,+BAAA;AACF;;AAEA;EACE,oBAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,mBAAA;EACA,kBAAA;EACA,gBAAA;EACA,kBAAA;AACF;;AAEA;EACE,WAAA;AACF;;AAEA;EACE,eAAA;AACF;;AAEA;EACE,gBAAA;EACA,iBAAA;EACA,kBAAA;AACF;;AAEA;EACE,iBAAA;AACF;;AAEA,0BAAA;AACA;EACE,aAAA;EACA,iBAAA;EACA,oBAAA;EACA,gBAAA;EACA,qBAAA;EACA,kBAAA;EACA,eAAA;AACF;;AAEA,cAAA;AACA;EACE,aAAA;EACA,mBAAA;EACA,eAAA;EACA,6BAAA;EACA,uBAAA;EACA,cAAA;EACA,aAAA;EACA,mBAAA;EACA,UAAA;EACA,yBAAA;EACA,6BAAA;EACA,gCAAA;AACF;;AAEA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,aAAA;EACA,aAAA;EACA,YAAA;EACA,yBAAA;EACA,kBAAA;EACA,kBAAA;AACF;;AAEA,mBAAA;AACA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,YAAA;EACA,aAAA;EACA,yBAAA;EAA0B,aAAA;EAC1B,kBAAA;AAEF;;AACA,gBAAA;AACA;EACE,mBAAA;EACA,kBAAA;EACA,iBAAA;EACA,eAAA;AAEF;;AACA,mBAAA;AACA;EACE,WAAA;AAEF;;AACA;EACE,eAAA;EACA,mBAAA;AAEF;;AACA;EACE,gBAAA;EACA,cAAA;EACA,eAAA;AAEF;;AACA,sBAAA;AACA;EACE,aAAA;EACA,mBAAA;EACA,eAAA;EACA,uBAAA;AAEF;;AACA;EACE,mBAAA;EACA,kBAAA;AAEF;;AACA;EACE,eAAA;AAEF;;AACA,UAAA;AACA;EACE,aAAA;EACA,mBAAA;EACA,uBAAA;EACA,eAAA;AAEF;;AACA;EACE,eAAA;EACA,mBAAA;AAEF;;AACA;EACE,kBAAA;EACA,eAAA;AAEF;;AACA;EACE,aAAA;EACA,mBAAA;EACA,uBAAA;AAEF;;AACA;EACE,iBAAA;EACA,gBAAA;AAEF;;AACA;EACE,iBAAA;EACA,gBAAA;EACA,WAAA;EACA,eAAA;AAEF;;AACA,wBAAA;AACA;EACE,WAAA;EACA,WAAA;AAEF;;AACA;EACE,aAAA;EACA,sBAAA;EACA,uBAAA;EACA,aAAA;AAEF;;AACA,mBAAA;AACA;EACE,eAAA;AAEF;;AACA;EACE,aAAA;EACA,YAAA;AAEF;;AACA,sBAAA;AACA;EACE,gBAAA;EACA,eAAA;AAEF","sourcesContent":["*   { \n  font-family: 'Lato', sans-serif;\n}\n\nbody, html {\n  margin: 0px;\n  padding: 15px;\n  background-color: #272727;\n  font-weight: thin;\n  font-size: 14px;\n  color: #fefefe;\n}\n\n/* dashboard */\n.data-container {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-content: center;\n  background-color: #272727;\n}\n\n/* nav bar */\n.nav-container  {\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  align-items: center;\n  padding: 15px;\n  width: 150px;\n  background-color: #141414;\n  border-right: 1px #272727 solid;\n  border-top-left-radius: 10px;\n  border-bottom-left-radius: 10px;\n}\n\n.expansion-wrapper  {\n  margin-bottom: 300px;\n}\n\n.welcome-container  {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  margin-bottom: 0px;\n  padding-top: 5px;\n  text-align: center;\n}\n\n.profile-image, .welcome-message, .date-message {\n  margin: 5px;\n}\n\n.profile-image, .welcome-message  {\n  cursor: pointer;\n}\n\n.welcome-message{\n  padding-top: 5px;\n  font-weight: bold;\n  text-align: center;\n}\n\n.user-greeting  {\n  font-weight: bold;\n}\n\n/* user container toggle */\n.expanded-container  {\n  display: none;\n  margin-right: 5px;\n  margin-bottom: 550px;\n  margin-left: 5px;\n  overflow-wrap: normal;\n  text-align: center;\n  font-size: 12px;\n}\n\n/* dashboard */\n.display-container {\n  display: flex;\n  flex-direction:row;\n  flex-wrap:wrap;\n  justify-content:space-around;\n  align-items:flex-start;\n  grid-gap: 15px;\n  padding: 15px;\n  height: min-content;\n  width: 85%;\n  background-color: #141414;\n  border-top-right-radius: 10px;\n  border-bottom-right-radius: 10px;\n}\n\n.activity-container, .add-activity-container, .activity-tracker, .hydration-container, .timer-container, .sleep-container, .hydration-tracker, .sleep-tracker, .community-container  {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 10px;\n  height: 325px;\n  width: 300px;\n  background-color: #3e3e3e;\n  text-align: center;\n  border-radius: 5px;\n}\n\n/* background div */\n.offset {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  height: 100%;\n  padding: 25px;\n  background-color: #3e3e3e;opacity:0.98;\n  border-radius: 5px;\n}\n\n/* header tags */\n.activity-header, .steps-header, .add-activity-header, .timer-header, .community-header, .sleep-header, .hydration-header, .hydration-tracker-header, .activity-tracker-header, .sleep-tracker-header {\n  margin-bottom: 15px;\n  text-align: center;\n  font-weight: bold;\n  font-size: 18px;\n}\n\n/* paragraph tags */\n.user-name, .user-email, .user-address, .user-stride, .user-steps, .comparison-steps, .sleep-today, .sleep-average-allTime, .sleep-quality-today, .sleep-quality-allTime {\n  margin: 5px;\n}\n\n.hydration-today  {\n  margin-top: 0px;\n  margin-bottom: 10px;\n}\n\n.sqi-info {\n  margin-top: 15px;\n  color: #CAFCFF;\n  cursor: pointer;\n}\n\n/* friends container */\n.friends-container  {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: center;\n}\n\n.friend1-image, .friend2-image, .friend3-image, .friend4-image, .friend5-image  {\n  padding-right: 10px;\n  padding-left: 10px;\n}\n\n.friend1, .friend2, .friend3, .friend4, .friend5  {\n  margin-top: 0px;\n}\n\n/* timer */\n.timer-countdown-container  {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  font-size: 40px;\n}\n\n.timer-minutes, .timer-seconds  {\n  margin-top: 0px;\n  margin-bottom: 10px;\n}\n\n.start-button {\n  width: fit-content;\n  cursor: pointer;\n}\n\n.timer-stats-container  {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n}\n\n.reps-count, .sets-count  {\n  margin-right: 5px;\n  margin-left: 5px;\n}\n\n.reset-button {\n  margin-right: 33%;\n  margin-left: 33%;\n  width: 85px;\n  cursor: pointer;\n}\n\n/* data visualizations */\n.chart-wrapper-bar, .chart-wrapper-doughnut  {\n  height: 70%;\n  width: 100%;\n}\n\n.activity-tracker, .hydration-tracker, .sleep-tracker {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  padding: 10px;\n}\n\n/* chart elements */\n.activity-chart, .hydration-chart, .sleep-chart {\n  cursor: pointer;\n}\n\n.hydration-chart  {\n  height: 200px;\n  width: 200px;\n}\n\n/* chart increments  */\n.activity-units, .hydration-units, .sleep-units  {\n  margin-top: 15px;\n  font-size: 12px;\n}\n\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ ((module) => {
 
 
@@ -672,7 +757,7 @@ module.exports = function cssWithMappingToString(item) {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ ((module) => {
 
 
@@ -743,7 +828,7 @@ module.exports = function (cssWithMappingToString) {
 };
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -753,7 +838,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/logo-image.png");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -763,7 +848,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/profile-image.png");
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -773,7 +858,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/background.png");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -783,7 +868,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/background-flip.png");
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -793,7 +878,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/spacer-gif.gif");
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -803,7 +888,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/friend1-image.png");
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -813,7 +898,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/friend2-image.png");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -823,7 +908,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/friend3-image.png");
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -833,7 +918,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/friend4-image.png");
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -841,6 +926,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/friend5-image.png");
+
+/***/ }),
+/* 22 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("images/timer-placeholder.jpg");
 
 /***/ })
 /******/ 	]);
@@ -925,17 +1020,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_Sleep__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 /* harmony import */ var _src_Activity__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
 /* harmony import */ var _src_apiCalls__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-/* harmony import */ var _css_styles_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6);
-/* harmony import */ var _images_logo_image_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(11);
-/* harmony import */ var _images_profile_image_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(12);
-/* harmony import */ var _images_background_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(13);
-/* harmony import */ var _images_background_flip_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(14);
-/* harmony import */ var _images_spacer_gif_gif__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(15);
-/* harmony import */ var _images_friend1_image_png__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(16);
-/* harmony import */ var _images_friend2_image_png__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(17);
-/* harmony import */ var _images_friend3_image_png__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(18);
-/* harmony import */ var _images_friend4_image_png__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(19);
-/* harmony import */ var _images_friend5_image_png__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(20);
+/* harmony import */ var countdown_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6);
+/* harmony import */ var countdown_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(countdown_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _css_styles_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7);
+/* harmony import */ var _images_logo_image_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(12);
+/* harmony import */ var _images_profile_image_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(13);
+/* harmony import */ var _images_background_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(14);
+/* harmony import */ var _images_background_flip_png__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(15);
+/* harmony import */ var _images_spacer_gif_gif__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(16);
+/* harmony import */ var _images_friend1_image_png__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(17);
+/* harmony import */ var _images_friend2_image_png__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(18);
+/* harmony import */ var _images_friend3_image_png__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(19);
+/* harmony import */ var _images_friend4_image_png__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(20);
+/* harmony import */ var _images_friend5_image_png__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(21);
+/* harmony import */ var _images_timer_placeholder_jpg__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(22);
+
+
 
 
 
@@ -943,7 +1043,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // global variables
-let user, hydration, activity, sleep, toggle
+let user, hydration, activity, sleep, toggle, end
+
+// timer global variables
+let pause = false
+let reps = 0
+let sets = 0
+const thirtySeconds = 1000
+
 
 // query selectors
 const userAddress = document.querySelector('.user-address')
@@ -957,7 +1064,7 @@ const dateMessage = document.querySelector('.date-message')
 const stepsToday = document.querySelector('.activity-steps-today')
 const distanceWalkedToday = document.querySelector('.activity-distance-today')
 const activeMinutesToday = document.querySelector('.activity-total-today')
-const numStepsWeekly = document.querySelector('.activity-steps-weekly')
+// const numStepsWeekly = document.querySelector('.activity-steps-weekly')
 const goalReached = document.querySelector('.activity-goal')
 const sleepToday = document.querySelector('.sleep-today')
 const sleepQualityToday = document.querySelector('.sleep-quality-today')
@@ -966,10 +1073,45 @@ const sleepQualityAll = document.querySelector('.sleep-quality-allTime')
 const profileImage = document.querySelector('.profile-image')
 const expandedContainer = document.querySelector('.expanded-container')
 const userGreeting = document.querySelector('.user-greeting')
+const userInputDate = document.getElementById('new-date')
+const userInputSteps = document.getElementById('new-steps')
+const addActivityButton = document.querySelector('.log-activity-button')
+const timerStartButton = document.querySelector('.start-button')
+// const timerPauseButton = document.querySelector('.pause-button')
+const timerResetButton = document.querySelector('.reset-button')
+const timerMinutes = document.querySelector('.timer-minutes')
+const timerSeconds = document.querySelector('.timer-seconds')
+const repsCount = document.querySelector('.reps-count')
+const setsCount = document.querySelector('.sets-count')
+const activityChart = document.querySelector('.activity-chart')
 
 // event listeners
 profileImage.addEventListener("click", toggleExpanded)
 welcomeMessage.addEventListener("click", toggleExpanded)
+addActivityButton.addEventListener("click", addActivity)
+timerStartButton.addEventListener("click", startTimer)
+// timerPauseButton.addEventListener("click", pauseTimer)
+timerResetButton.addEventListener("click", resetTimer)
+welcomeMessage.addEventListener("keydown", (event) => {
+  if (event.key === 'Enter') {
+    userGreeting.innerText =  `Welcome back, ${user.name.split(" ")[0]}!`
+    userAddress.innerText = `${user.address}`
+    userEmail.innerText = `${user.email}`
+    userStride.innerText = `Stride Length: ${user.strideLength} ft`
+    expandedContainer.style.display = "inline";
+  }
+})
+
+profileImage.addEventListener("keydown", (event) => {
+    if (event.key === 'Enter') {
+      userGreeting.innerText =  `Welcome back, ${user.name.split(" ")[0]}!`
+      userAddress.innerText = `${user.address}`
+      userEmail.innerText = `${user.email}`
+      userStride.innerText = `Stride Length: ${user.strideLength} ft`
+      expandedContainer.style.display = "inline";
+    }
+})
+
 window.addEventListener('load', () => {
 
 // functions 
@@ -987,10 +1129,30 @@ Promise.all(_src_apiCalls__WEBPACK_IMPORTED_MODULE_4__["default"])
     displayActivityTracker()
     displayHydrationTracker()
     displaySleepTracker()
-    displayCalendar()
   })
   .catch(error => console.log(error))
 })
+
+function addActivity(event) {
+  event.preventDefault()
+  if (!userInputDate.value || !userInputSteps.value) {
+    window.alert('Please select a date and fill in the number of steps')
+    
+  } else {
+    fetch('http://localhost:3001/api/v1/activity', {
+      method: 'POST',
+      body: JSON.stringify({userID: parseInt(`${user.id}`), date: `${userInputDate.value}`, flightsOfStairs: 0, minutesActive: 0, numSteps: `${userInputSteps.value}`}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(json => console.log(json))
+      .catch(Error => window.alert('Server Error...Try Again later!'), Error);
+      userInputDate.value = ''
+      userInputSteps.value = ''
+    }
+}
 
 function getRandomIndex(usersData) {
   return Math.floor(Math.random() * usersData.length)
@@ -1054,22 +1216,13 @@ function displayActivityTracker() {
 Chart.defaults.color = "#EDEDED",
 
   new Chart(ctx, {
-    type: "line",
+    type: 'bar',
     data: {
       labels: shortenedKeys,
       datasets:[{
-          color: "#fefefe",
-          label: 'Goal met?',
-          data: activity.reachStepGoal(user, htmlDate),
-          backgroundColor: "#28B0EB",
-          borderWidth: 0,
-        },{
         label: "Steps taken",
         data: activity.chartWeeklySteps(user, htmlDate),
         backgroundColor: ["#CAFCFF", "#89EBF1", "#65CAF6", "#28B0EB", "#2882EB", "#095AB8", "#023572"],
-        borderWidth: 1,
-        stack: 'combined',
-        type: 'bar',
       }]
     },
     options: {
@@ -1083,10 +1236,16 @@ Chart.defaults.color = "#EDEDED",
       scales: {
         x: {
           ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0
           }
         },
         y: {
           ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0
           }
         }
       }
@@ -1118,7 +1277,6 @@ function displaySleepTracker() {
         borderWidth: 0,
       },
       {
-        color: "white",
         label: "Hours slept",
         data: sleep.chartWeeklyHours(user, htmlDate),
         backgroundColor: ["#CAFCFF", "#89EBF1", "#65CAF6", "#28B0EB", "#2882EB", "#095AB8", "#023572"],
@@ -1192,7 +1350,6 @@ function displayHydrationTracker() {
 function toggleExpanded() {
   if (toggle === true)  {
     toggle = false
-    console.log(toggle)
     userGreeting.innerText =  `Welcome back, ${user.name.split(" ")[0]}!`
     userAddress.innerText = `${user.address}`
     userEmail.innerText = `${user.email}`
@@ -1200,13 +1357,51 @@ function toggleExpanded() {
     expandedContainer.style.display = "inline"
   } else {
     toggle = true;
-    console.log(toggle)
     expandedContainer.style.display = "none"
   }
   return toggle
 }
 
+function startTimer() {
+  pause = false;
+  end = new Date(new Date().getTime() + thirtySeconds)
+  let timer = countdown_js__WEBPACK_IMPORTED_MODULE_5___default().timer(end, function(timeLeft) {
+    if (pause === false)  {
+      timerMinutes.innerText = `0${timeLeft.minutes}:`
+      timerSeconds.innerText = timeLeft.seconds
+      // console.log(timeLeft.seconds)
+    } else {
+      pause = true
+    }
+  }, function() {
+    timerMinutes.innerText = "00:"
+    timerSeconds.innerText = "00"
+    if (pause === false)  {
+      reps = (reps +1)
+      repsCount.innerText = (`${reps} Reps`)
+      if (reps === 3)  {
+        sets = (sets +1)
+        reps = 0
+        setsCount.innerText = (`${sets} Sets`)
+        repsCount.innerText = (`${reps} Reps`)
+      } 
+    }
+  })
+}
+
+function resetTimer() {
+  // pause = true
+  // end = new Date().getTime()
+  // timerMinutes.innerText = "00:"
+  // timerSeconds.innerText = "00"
+  reps = 0;
+  repsCount.innerText = (`${reps} Reps`)
+  sets = 0;
+  setsCount.innerText = (`${sets} Sets`)
+}
+
 // imports
+
 
 
 
