@@ -13,7 +13,7 @@ let user, hydration, activity, sleep, toggle, end
 let pause = false
 let reps = 0
 let sets = 0
-const thirtySeconds = 3000
+const thirtySeconds = 30000
 
 // query selectors
 const userAddress = document.querySelector('.user-address')
