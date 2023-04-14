@@ -13,7 +13,7 @@ let user, hydration, activity, sleep, toggle, end
 let pause = false
 let reps = 0
 let sets = 0
-const thirtySeconds = 1000
+const thirtySeconds = 30000
 
 
 // query selectors
@@ -28,7 +28,6 @@ const dateMessage = document.querySelector('.date-message')
 const stepsToday = document.querySelector('.activity-steps-today')
 const distanceWalkedToday = document.querySelector('.activity-distance-today')
 const activeMinutesToday = document.querySelector('.activity-total-today')
-// const numStepsWeekly = document.querySelector('.activity-steps-weekly')
 const goalReached = document.querySelector('.activity-goal')
 const sleepToday = document.querySelector('.sleep-today')
 const sleepQualityToday = document.querySelector('.sleep-quality-today')
@@ -41,7 +40,6 @@ const userInputDate = document.getElementById('new-date')
 const userInputSteps = document.getElementById('new-steps')
 const addActivityButton = document.querySelector('.log-activity-button')
 const timerStartButton = document.querySelector('.start-button')
-// const timerPauseButton = document.querySelector('.pause-button')
 const timerResetButton = document.querySelector('.reset-button')
 const timerMinutes = document.querySelector('.timer-minutes')
 const timerSeconds = document.querySelector('.timer-seconds')
@@ -54,7 +52,6 @@ profileImage.addEventListener("click", toggleExpanded)
 welcomeMessage.addEventListener("click", toggleExpanded)
 addActivityButton.addEventListener("click", addActivity)
 timerStartButton.addEventListener("click", startTimer)
-// timerPauseButton.addEventListener("click", pauseTimer)
 timerResetButton.addEventListener("click", resetTimer)
 welcomeMessage.addEventListener("keydown", (event) => {
   if (event.key === 'Enter') {
@@ -178,7 +175,6 @@ function displayActivityTracker() {
   })
 
 Chart.defaults.color = "#EDEDED",
-
   new Chart(ctx, {
     type: 'bar',
     data: {
@@ -227,7 +223,6 @@ function displaySleepTracker() {
     shortenedKeys.push(key.slice(5))
     return  shortenedKeys
   })
-
   new Chart(ctx, {
     type: 'line',
     data: {
@@ -286,7 +281,6 @@ function displayHydrationTracker() {
     shortenedKeys.push(key.slice(5))
     return shortenedKeys
   })
-
   new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -354,10 +348,6 @@ function startTimer() {
 }
 
 function resetTimer() {
-  // pause = true
-  // end = new Date().getTime()
-  // timerMinutes.innerText = "00:"
-  // timerSeconds.innerText = "00"
   reps = 0;
   repsCount.innerText = (`${reps} Reps`)
   sets = 0;
