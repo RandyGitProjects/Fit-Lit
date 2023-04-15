@@ -24,7 +24,7 @@ Fit Lit is a locally-hosted, web-based application designed to help users track,
 
 ## Preview
 
-![Application Functionality](./src/images/README-gif.gif) 
+![Fitlit_04142023_gif](https://user-images.githubusercontent.com/117230717/232173018-5cc97f3f-35ae-47a7-a4ba-0debcf1d96b6.gif)
 
 
 ---
